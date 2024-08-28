@@ -38,12 +38,13 @@ defmodule BeepboopWeb do
 
   def controller do
     quote do
+      use Gettext, backend: BeepboopWeb.Gettext
+
       use Phoenix.Controller,
         formats: [:html, :json],
         layouts: [html: BeepboopWeb.Layouts]
 
       import Plug.Conn
-      import BeepboopWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -81,11 +82,12 @@ defmodule BeepboopWeb do
 
   defp html_helpers do
     quote do
+      use Gettext, backend: BeepboopWeb.Gettext
+
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
       import BeepboopWeb.CoreComponents
-      import BeepboopWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

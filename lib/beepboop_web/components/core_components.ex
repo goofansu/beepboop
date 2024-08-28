@@ -14,10 +14,10 @@ defmodule BeepboopWeb.CoreComponents do
 
   Icons are provided by [heroicons](https://heroicons.com). See `icon/1` for usage.
   """
+  use Gettext, backend: BeepboopWeb.Gettext
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
-  import BeepboopWeb.Gettext
 
   @doc """
   Renders a modal.

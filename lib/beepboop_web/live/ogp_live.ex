@@ -1,4 +1,4 @@
-defmodule BeepboopWeb.OgpPreviewLive.Index do
+defmodule BeepboopWeb.OgpLive do
   use BeepboopWeb, :live_view
 
   alias Phoenix.LiveView.AsyncResult

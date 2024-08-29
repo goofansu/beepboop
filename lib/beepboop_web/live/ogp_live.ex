@@ -9,11 +9,13 @@ defmodule BeepboopWeb.OgpLive do
       <div class="flex-grow flex items-center border rounded-l overflow-hidden">
         <span class="bg-gray-100 text-gray-500 px-3 py-2 h-full flex items-center">https://</span>
         <input
+          id="input-url"
           type="text"
           name="url"
           value={@url}
           placeholder="github.com"
           phx-debounce="300"
+          phx-hook="FocusInput"
           class="flex-grow px-3 py-2 focus:outline-none"
           disabled={@loading}
         />
@@ -82,13 +84,13 @@ defmodule BeepboopWeb.OgpLive do
      |> assign(:result, AsyncResult.ok(result))}
   end
 
-  def handle_async(:fetch_url, {:exit, error}, socket) do
-    {%OpenGraph.Error{reason: {_, reason}}, _} = error
+  def handle_async(:fetch_url, {:exit, reason}, socket) do
+    {error, _} = reason
 
     {:noreply,
      socket
      |> assign(:loading, false)
      |> assign(:result, AsyncResult.ok(nil))
-     |> put_flash(:error, reason)}
+     |> put_flash(:error, Exception.message(error))}
   end
 end

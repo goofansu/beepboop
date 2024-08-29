@@ -52,17 +52,19 @@ defmodule BeepboopWeb.OgpPreviewLive.Index do
      |> assign(:result, AsyncResult.ok(nil))}
   end
 
-  def handle_event("submit_url", %{"url" => ""}, socket) do
-    {:noreply, put_flash(socket, :error, "Please enter a URL")}
-  end
-
   def handle_event("submit_url", %{"url" => url}, socket) do
-    {:noreply,
-     socket
-     |> assign(:url, url)
-     |> assign(:loading, true)
-     |> assign(:result, AsyncResult.loading())
-     |> start_async(:fetch_url, fn -> OpenGraph.fetch!("https://" <> url) end)}
+    case URI.new(url) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> assign(:url, url)
+         |> assign(:loading, true)
+         |> assign(:result, AsyncResult.loading())
+         |> start_async(:fetch_url, fn -> OpenGraph.fetch!("https://" <> url) end)}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, "Please enter a valid URL.")}
+    end
   end
 
   def handle_async(:fetch_url, {:ok, %{title: nil}}, socket) do

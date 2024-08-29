@@ -15,6 +15,7 @@ defmodule BeepboopWeb.OgpPreviewLive.Index do
           placeholder="github.com"
           phx-debounce="300"
           class="flex-grow px-3 py-2 focus:outline-none"
+          disabled={@loading}
         />
       </div>
     </form>
@@ -47,6 +48,7 @@ defmodule BeepboopWeb.OgpPreviewLive.Index do
     {:ok,
      socket
      |> assign(:url, nil)
+     |> assign(:loading, false)
      |> assign(:result, AsyncResult.ok(nil))}
   end
 
@@ -58,28 +60,24 @@ defmodule BeepboopWeb.OgpPreviewLive.Index do
     {:noreply,
      socket
      |> assign(:url, url)
+     |> assign(:loading, true)
      |> assign(:result, AsyncResult.loading())
-     |> start_async(:fetch_url, fn -> OpenGraph.fetch!("https://" <> url, max_retries: 0) end)}
+     |> start_async(:fetch_url, fn -> OpenGraph.fetch!("https://" <> url) end)}
   end
 
-  def handle_async(:fetch_url, {:ok, nil}, socket) do
+  def handle_async(:fetch_url, {:ok, %{title: nil}}, socket) do
     {:noreply,
      socket
+     |> assign(:loading, false)
      |> assign(:result, AsyncResult.ok(nil))
-     |> put_flash(:info, "Open Graph information not found.")}
+     |> put_flash(:error, "Open Graph information not found.")}
   end
 
-  def handle_async(:fetch_url, {:ok, fetched_result}, socket) do
-    %{result: result} = socket.assigns
-
-    if fetched_result.title == nil do
-      {:noreply,
-       socket
-       |> assign(:result, AsyncResult.ok(nil))
-       |> put_flash(:error, "Open Graph information not found.")}
-    else
-      {:noreply, assign(socket, :result, AsyncResult.ok(result, fetched_result))}
-    end
+  def handle_async(:fetch_url, {:ok, result}, socket) do
+    {:noreply,
+     socket
+     |> assign(:loading, false)
+     |> assign(:result, AsyncResult.ok(result))}
   end
 
   def handle_async(:fetch_url, {:exit, error}, socket) do
@@ -88,6 +86,7 @@ defmodule BeepboopWeb.OgpPreviewLive.Index do
     {:noreply,
      socket
      |> assign(:result, AsyncResult.ok(nil))
+     |> assign(:loading, false)
      |> put_flash(:error, reason)}
   end
 end

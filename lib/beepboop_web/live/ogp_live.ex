@@ -87,8 +87,8 @@ defmodule BeepboopWeb.OgpLive do
 
     {:noreply,
      socket
-     |> assign(:result, AsyncResult.ok(nil))
      |> assign(:loading, false)
+     |> assign(:result, AsyncResult.ok(nil))
      |> put_flash(:error, reason)}
   end
 end

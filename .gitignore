@@ -35,3 +35,4 @@ beepboop-*.tar
 npm-debug.log
 /assets/node_modules/
 
+/.direnv/

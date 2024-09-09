@@ -20,6 +20,7 @@ defmodule BeepboopWeb.Router do
     get "/", PageController, :home
     live "/thermostat/:house", ThermostatLive
     live "/ogp", OgpLive
+    live "/light", LightLive
   end
 
   # Other scopes may use custom stacks.

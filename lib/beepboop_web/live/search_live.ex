@@ -8,7 +8,8 @@ defmodule BeepboopWeb.SearchLive do
       assign(socket,
         search: nil,
         vehicles: [],
-        loading: false
+        loading: false,
+        suggestions: []
       )
 
     {:ok, socket}
@@ -16,16 +17,22 @@ defmodule BeepboopWeb.SearchLive do
 
   def render(assigns) do
     ~H"""
-    <form phx-submit="search">
-      <input type="text" name="term" />
+    <form phx-submit="search" phx-change="suggest">
+      <input type="text" name="term" list="suggestions" phx-debounce="1000" />
       <input type="submit" value="Search" />
     </form>
+
+    <datalist id="suggestions">
+      <option :for={suggestion <- @suggestions} value={suggestion}>
+        <%= suggestion %>
+      </option>
+    </datalist>
 
     <div :if={@loading} class="animate-pulse">
       Loading...
     </div>
 
-    <table :if={@vehicles}>
+    <table :if={@vehicles} class="border-1">
       <tr :for={v <- @vehicles}>
         <td>
           <%= v.make_model %>
@@ -53,8 +60,20 @@ defmodule BeepboopWeb.SearchLive do
     {:noreply, socket}
   end
 
+  def handle_event("suggest", %{"term" => term}, socket) do
+    suggestions = Vehicles.suggest(term) |> IO.inspect(label: "suggestions")
+
+    socket =
+      assign(socket,
+        term: term,
+        suggestions: suggestions
+      )
+
+    {:noreply, socket}
+  end
+
   def handle_info({:run_search, term}, socket) do
-    vehicles = Vehicles.search(term)
+    vehicles = Vehicles.search(term) |> IO.inspect(label: "vehicles")
 
     socket =
       assign(socket,

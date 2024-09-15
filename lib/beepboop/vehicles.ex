@@ -1,4 +1,6 @@
 defmodule Beepboop.Vehicles do
+  def search(""), do: []
+
   def search(make_or_model) do
     list_vehicles()
     |> Enum.filter(

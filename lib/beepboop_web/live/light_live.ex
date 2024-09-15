@@ -34,7 +34,7 @@ defmodule BeepboopWeb.LightLive do
     </div>
 
     <form phx-change="slide">
-      <input type="range" min="0" max="100" name="brightness" value={@brightness} />
+      <input type="range" min="0" max="100" name="brightness" value={@brightness} phx-debounce="250" />
     </form>
 
     <div class="mt-4">

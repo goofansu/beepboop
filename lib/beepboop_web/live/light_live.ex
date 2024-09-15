@@ -1,12 +1,25 @@
 defmodule BeepboopWeb.LightLive do
   use BeepboopWeb, :live_view
 
+  @brightness 50
+
   def mount(_params, _session, socket) do
-    socket = assign(socket, brightness: 10)
+    IO.inspect(self(), label: "mount")
+    IO.inspect(connected?(socket), label: "mount")
+
+    socket =
+      if connected?(socket) do
+        assign(socket, brightness: @brightness)
+      else
+        assign(socket, brightness: 0)
+      end
+
     {:ok, socket}
   end
 
   def render(assigns) do
+    IO.inspect(self(), label: "render")
+
     ~H"""
     <div class="w-full border">
       <div
@@ -46,6 +59,7 @@ defmodule BeepboopWeb.LightLive do
   end
 
   def handle_event("rand", _payload, socket) do
+    # raise "🔥"
     {:noreply, assign(socket, :brightness, Enum.random(0..100))}
   end
 end

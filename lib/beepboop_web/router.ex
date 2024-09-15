@@ -21,6 +21,7 @@ defmodule BeepboopWeb.Router do
     live "/thermostat/:house", ThermostatLive
     live "/ogp", OgpLive
     live "/light", LightLive
+    live "/sandbox", SandboxLive
   end
 
   # Other scopes may use custom stacks.

@@ -24,6 +24,7 @@ defmodule BeepboopWeb.Router do
     live "/sandbox", SandboxLive
     live "/bingo", BingoLive
     live "/search", SearchLive
+    live "/filter", FilterLive
   end
 
   # Other scopes may use custom stacks.

@@ -23,7 +23,7 @@ defmodule BeepboopWeb.SearchLive do
       <input type="submit" value="Search" />
     </form>
 
-    <.loading_indicator loading={@loading} />
+    <.loading_indicator visible={@loading} />
 
     <datalist id="suggestions">
       <option :for={suggestion <- @suggestions} value={suggestion}>

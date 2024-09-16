@@ -1,12 +1,14 @@
 defmodule BeepboopWeb.CustomComponents do
   use Phoenix.Component
 
-  attr :loading, :boolean, required: true
+  attr :visible, :boolean, required: true
 
   def loading_indicator(assigns) do
     ~H"""
-    <div :if={@loading} class="animate-pulse">
-      Loading...
+    <div :if={@visible} class="animate-pulse">
+      <div class="w-12 h-12 rounded-full absolute border-8 border-gray-300"></div>
+      <div class="w-12 h-12 rounded-full absolute border-8 border-indigo-400 border-t-transparent animate-spin">
+      </div>
     </div>
     """
   end

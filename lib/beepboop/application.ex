@@ -8,6 +8,7 @@ defmodule Beepboop.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      Beepboop.Repo,
       BeepboopWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:beepboop, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Beepboop.PubSub},

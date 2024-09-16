@@ -9,11 +9,9 @@ import Config
 
 config :beepboop, Beepboop.Repo,
   database: "beepboop",
-  username: "postgres",
-  password: "postgres",
   hostname: "localhost"
 
-config :beepboop, ecto_repos: [Friends.Repo]
+config :beepboop, ecto_repos: [Beepboop.Repo]
 
 config :beepboop,
   generators: [timestamp_type: :utc_datetime]

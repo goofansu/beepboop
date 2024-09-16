@@ -88,6 +88,8 @@ defmodule BeepboopWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import BeepboopWeb.CoreComponents
+      # Custom UI components
+      import BeepboopWeb.CustomComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

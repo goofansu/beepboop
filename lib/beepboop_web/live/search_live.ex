@@ -18,19 +18,18 @@ defmodule BeepboopWeb.SearchLive do
   def render(assigns) do
     ~H"""
     <form phx-submit="search" phx-change="suggest">
+      <.icon name="hero-magnifying-glass-circle" />
       <input type="text" name="term" list="suggestions" phx-debounce="1000" />
       <input type="submit" value="Search" />
     </form>
+
+    <.loading_indicator loading={@loading} />
 
     <datalist id="suggestions">
       <option :for={suggestion <- @suggestions} value={suggestion}>
         <%= suggestion %>
       </option>
     </datalist>
-
-    <div :if={@loading} class="animate-pulse">
-      Loading...
-    </div>
 
     <table :if={@vehicles} class="border-1">
       <tr :for={v <- @vehicles}>
